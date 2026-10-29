@@ -1,0 +1,23 @@
+name: Daily Current Affairs
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 0 * * *'  # Daily 6 AM IST
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install requests
+        run: pip install requests
+      - name: Send WhatsApp Message
+        env:
+          WHATSAPP_TOKEN: ${{ secrets.WHATSAPP_TOKEN }}
+          PHONE_NUMBER_ID: ${{ secrets.PHONE_NUMBER_ID }}
+          RECIPIENT_NUMBER: ${{ secrets.RECIPIENT_NUMBER }}
+        run: python main.py
